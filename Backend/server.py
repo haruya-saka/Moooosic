@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Google Cloud Vision APIキー
-api_key = 'AIzaSyAKiq2q3SF3XtA2pyxsWVVPBxlyK92DnoU'
+api_key = ''
 
 # アップロードされた画像を保存するフォルダを設定
 UPLOAD_FOLDER = 'C:/python_portfolio/mooooosic'
