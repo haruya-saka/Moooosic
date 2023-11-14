@@ -1,4 +1,3 @@
-
 https://github.com/haruya-saka/Moooosic/assets/127200853/ca7132d6-319b-4787-85db-6c74adf21027
 # Mooooosic（むーじっく）
 
