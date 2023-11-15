@@ -1,7 +1,9 @@
-https://github.com/haruya-saka/Moooosic/assets/127200853/ca7132d6-319b-4787-85db-6c74adf21027
 # Mooooosic（むーじっく）
 
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2023/07/JPHACKS2023_ogp.png)](https://www.youtube.com/watch?v=yYRQEdfGjEg)
+
+## デモ
+https://github.com/haruya-saka/Moooosic/assets/127200853/ca7132d6-319b-4787-85db-6c74adf21027
 
 ## リポジトリURL
 フロントエンド：[(フロントエンドページ)](https://github.com/mooooosic/SubmitFrontend)
