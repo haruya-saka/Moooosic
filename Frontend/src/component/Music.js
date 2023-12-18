@@ -1,68 +1,166 @@
-import React, { useEffect, useRef, useState } from "react";
-import background from '../img/background.png';
+import React, { useRef,useState } from "react";
+import YouTube from "react-youtube";
+import backgroundImage from "../img/background.png"; // 画像ファイルのパスを指定
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
+import { Navigate, useLocation } from "react-router-dom";
 
-const Music = () => {
-  const style = {
-    backgroundImage: `url(${background})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
+function App() {
+  const location = useLocation();
+  const { data } = location.state;
+
+  console.log(data);
+  const [selectedDataId, setSelectedDataId] = useState(0)
+ 
+  const selectData = data[selectedDataId];
+
+  const videoId = selectData.videoID;
+  const songName = selectData.name;
+
+  const artistName = selectData.artist;
+  
+  const playerRef = useRef(null)
+
+  const nextSong = () => {
+    console.log("Next Song Clicked", selectedDataId);
+    setSelectedDataId((prevIndex) => {
+      if (prevIndex === 9) {
+        // インデックスが9の場合、最初のインデックスに移動
+        return 0;
+      } else {
+        return prevIndex + 1;
+      }
+    });
   };
 
-  const playerStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+  const backSong = () => {
+    console.log("Back Song Clicked", selectedDataId);
+    setSelectedDataId((prevIndex) => {
+      if (prevIndex === 0) {
+        // インデックスが0の場合、最後尾のインデックスに移動
+        return data.length - 1;
+      } else {
+        return prevIndex - 1;
+      }
+    });
   };
 
-  const playerRef = useRef(null);
-  const TIMEOUT_MS = 5000;
-  const [playerLoaded, setPlayerLoaded] = useState(false);
+  const onPlayerReady = (event) => {
+    const player = event.target;
+    playerRef.current = player;
+  };
 
-  useEffect(() => {
-    if (!window.YT || !window.YT.Player) {
-      const script = document.createElement('script');
-      script.src = 'https://www.youtube.com/iframe_api';
-
-      script.onload = () => {
-        if (window.YT && window.YT.Player) {
-          playerRef.current = new window.YT.Player('youtube-player', {
-            height: '360',
-            width: '640',
-            videoId: "fhzKLBZJC3w",
-            playerVars: {
-              autoplay: 1,
-              controls: 1,
-            },
-          });
-          setPlayerLoaded(true);
-        } else {
-          console.error("YouTube Player APIが正しく読み込まれていません。");
-        }
-      };
-
-      document.body.appendChild(script);
-
-      const timeoutId = setTimeout(() => {
-        console.error("YouTube Player APIの読み込みがタイムアウトしました。");
-      }, TIMEOUT_MS);
-
-      return () => {
-        clearTimeout(timeoutId);
-      };
+  const onPauseVideo = () => {
+    if (playerRef.current) {
+      playerRef.current.pauseVideo(); // 動画を一時停止
     }
-  }, []);
+  };
 
-  return (
-    <div style={style}> 
-      <div id="youtube-player" style={playerStyle}></div>
-    </div>
-  );
+  const containerStyle = {
+    position: "relative",
+    width: "100vw",
+    height: "88vh",
+  };
+
+  const backgroundStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background: `url(${backgroundImage}) center/cover no-repeat fixed`,
+    zIndex: -1,
+  };
+
+  const videoContainerStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 0,
+  };
+
+  const rectangleStyle = {
+    position: "absolute",
+    top: "21.4%",
+    left: "25.9%",
+    width: "48%",
+    height: "56.5%",
+    border: "1px solid #fff",
+    zIndex: -1,
+  };
+
+  const songdetails = {
+    position: "absolute",
+    top: "12%",
+    left: "38%",
+    transform: "translate(-50%, -50%)",
+    color: "#fff",
+    fontSize: "50px",
+    textAlign: "center",
+  };
+
+
+ // ...
+
+ const buttonContainerStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center", // Vertically center the buttons
+  position: "absolute",
+  top: "80%",
+  left: "50%",
+  transform: "translateX(-50%)",
+  zIndex: 1,
+  backgroundPosition: 'center center',
 };
 
-export default Music;
+const backButtonStyle = {
+  transform: "rotate(180deg)",
+  fontSize: "24px", // Increase the font size of the button icon
+  marginRight: "300px", // Add some margin to the right to increase spacing
+};
+
+const nextButtonStyle = {
+  fontSize: "24px", // Increase the font size of the button icon
+  marginLeft: "20px", // Add some margin to the left to increase spacing
+};
+
+// ...
+
+return (
+  <div style={containerStyle}>
+    <div style={backgroundStyle}></div>
+    <div style={videoContainerStyle}>
+      <YouTube videoId={videoId} onReady={onPlayerReady} />
+    </div>
+    <div style={rectangleStyle}></div>
+    <div style={songdetails}>
+      {/* <p>{songName}/{artistName}</p> */}
+    </div>
+    <div style={buttonContainerStyle}>
+      <button onClick={backSong} style={backButtonStyle}><FontAwesomeIcon icon={faAnglesRight} /></button>
+      <button onClick={nextSong} style={nextButtonStyle}><FontAwesomeIcon icon={faAnglesRight} /></button>
+    </div>
+  </div>
+);
+
+}
+
+const nextButtonStyle = {
+  position: "absolute",
+  top: "80%",
+  left: "75%",
+  transform: "translateX(-50%)",
+  zIndex: 1,
+};
+const pauseButtonStyle = {
+  position: "absolute",
+  top: "70%",
+  left: "50%",
+  transform: "translateX(-50%)",
+  zIndex: -1,
+};
+
+
+export default App;

@@ -13,7 +13,7 @@ CORS(app)
 api_key = ''
 
 # アップロードされた画像を保存するフォルダを設定
-UPLOAD_FOLDER = 'C:/python_portfolio/mooooosic'
+UPLOAD_FOLDER = ''
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
@@ -116,7 +116,7 @@ def get_random_data():
     request_data = request.get_json()
     emotion = request_data.get('emotion_type')
     num_elements = 10  # 取得したいランダムな要素の数
-    random_elements = get_random_elements(f"mooooosic/{emotion}.csv", num_elements)
+    random_elements = get_random_elements(f"Moooosic/Backend/{emotion}.csv", num_elements)
     return jsonify(random_elements)
 
 @app.route('/api/happy', methods=['POST'])
@@ -129,4 +129,4 @@ def get_happy_data():
 if __name__ == '__main__':
     # アップロードフォルダを作成
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    app.run(port=5000)
+    app.run(port=5001)

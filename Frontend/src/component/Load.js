@@ -62,16 +62,16 @@ const Load = () => {
 
 useEffect(() => {
       console.log(emotion)
+      // 初回のレンダリング時のみ以下の処理を実行
       if(!loading){
         return;
       }
       // リクエストボディを作成
       const requestBody = {
         emotion_type: emotion,
-        // 他に必要なデータがあればここで追加
       };
       // POST リクエストを送信
-      fetch('http://localhost:5000/api/random', {
+      fetch('http://localhost:5001/api/random', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,13 +88,10 @@ useEffect(() => {
       .then((data) => {
         console.log(data);
         // レスポンスデータに対する処理を行う
-        //let img = emotion;
         console.log(emotion)
-        //setLoading(false);
         setTimeout(() => {
           setLoading(false);
         },3000);
-        //stopAnimation();
         setTimeout(() => {
           stopAnimation();
         }, 7000);
